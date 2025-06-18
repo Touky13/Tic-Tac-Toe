@@ -1,7 +1,7 @@
 const gameBoard = (function () {
-    const arrayBot = [0,0,0];
-    const arrayMid = [0,0,0];
-    const arrayTop = [0,0,0];
+    const arrayBot = ['','',''];
+    const arrayMid = ['','',''];
+    const arrayTop = ['','',''];
     return { arrayBot, arrayMid, arrayTop };
 })();
 console.log (gameBoard);
@@ -50,9 +50,33 @@ const gameLogic = (function () {
         alert("You win row");
     } else if (calculator.sumDiag0 === 3 || calculator.sumDiag0 === -3 || calculator.sumDiag1 === 3 || calculator.sumDiag1 === -3) {
         alert("You win diag");
-    } else if (gameBoard.arrayBot.includes(0) === true || gameBoard.arrayMid.includes(0) === true || gameBoard.arrayTop.includes(0) === true) {
-        alert("The game continue");
+    } else if (gameBoard.arrayBot.includes('') === true || gameBoard.arrayMid.includes('') === true || gameBoard.arrayTop.includes('') === true) {
+        //alert("The game continue");
     } else {
         alert("It's a tie");
     }
 })();
+
+
+const display = (function () {
+    const body = document.querySelector("body");
+    const div = document.createElement("div");
+    body.appendChild(div);
+    div.classList.add("gameDisplay");
+
+    gameBoard.arrayBot.forEach(item => {
+        let square = document.createElement("span");
+        square.innerText = item;
+        div.appendChild(square);
+    });
+    gameBoard.arrayMid.forEach(item => {
+        let square = document.createElement("span");
+        square.innerText = item;
+        div.appendChild(square);
+    });
+    gameBoard.arrayTop.forEach(item => {
+        let square = document.createElement("span");
+        square.innerText = item;
+        div.appendChild(square);
+    });
+ })();   
