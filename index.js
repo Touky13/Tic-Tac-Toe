@@ -1,7 +1,7 @@
 const gameBoard = (function () {
-    const arrayBot = ['','',''];
-    const arrayMid = ['','',''];
-    const arrayTop = ['','',''];
+    const arrayBot = ['',0,''];
+    const arrayMid = [0,'',''];
+    const arrayTop = ['','',1];
     return { arrayBot, arrayMid, arrayTop };
 })();
 console.log (gameBoard);
@@ -57,7 +57,6 @@ const gameLogic = (function () {
     }
 })();
 
-
 const display = (function () {
     const body = document.querySelector("body");
     const div = document.createElement("div");
@@ -66,17 +65,23 @@ const display = (function () {
 
     gameBoard.arrayBot.forEach(item => {
         let square = document.createElement("span");
-        square.innerText = item;
+        let p = document.createElement("p");
+        p.innerText = item;
         div.appendChild(square);
+        square.appendChild(p);
     });
     gameBoard.arrayMid.forEach(item => {
         let square = document.createElement("span");
-        square.innerText = item;
+        let p = document.createElement("p");
+        p.innerText = item;
         div.appendChild(square);
+        square.appendChild(p);
     });
     gameBoard.arrayTop.forEach(item => {
         let square = document.createElement("span");
-        square.innerText = item;
+        let p = document.createElement("p");
+        p.innerText = item;
         div.appendChild(square);
+        square.appendChild(p);
     });
- })();   
+ })(); 
