@@ -8,21 +8,26 @@ function createPlayer (name, marker) {
     const userInput = prompt("Please enter your name:")
     if (userInput === "") {
         alert("You didn't choose a name.");
+        userName = name;
     } else if (userInput !== null) {
         alert("Hello, " + userInput + "!");
+        userName = userInput;
     } else {
         alert("You canceled the input.");
+        userName = name;
     }
-    return { name, marker, userInput };
+    const body = document.querySelector("body");
+
+    return { name, marker, userName };
 };
 
-const playerOne = createPlayer ("player one", "x");
+const playerOne = createPlayer ("player one", "X");
 console.log ({
     name: playerOne.name,
     marker: playerOne.marker
 });
 
-const playerTwo = createPlayer ("player two", "o");
+const playerTwo = createPlayer ("player two", "O");
 console.log ({
     name: playerTwo.name,
     marker: playerTwo.marker
@@ -33,6 +38,32 @@ const display = (function () {
     const div = document.createElement("div");
     body.appendChild(div);
     div.classList.add("gameDisplay");
+
+    const playerInterface = document.createElement("div");
+    playerInterface.classList.add("playerInterface");
+    const player1 = document.createElement("div");
+    player1.classList.add("player");
+    player1.setAttribute("id", playerOne.name);
+    const p1_1 = document.createElement("p");
+    const p2_1 = document.createElement("p");
+    p1_1.innerText = playerOne.userName;
+    p2_1.innerText = "marker: " + playerOne.marker;
+    body.appendChild(playerInterface);
+    playerInterface.appendChild(player1);
+    player1.appendChild(p1_1);
+    player1.appendChild(p2_1);
+
+    const player2 = document.createElement("div");
+    player2.classList.add("player");
+    player2.setAttribute("id", playerTwo.name);
+    const p1_2 = document.createElement("p");
+    const p2_2 = document.createElement("p");
+    p1_2.innerText = playerTwo.userName;
+    p2_2.innerText = "marker: " + playerTwo.marker;
+    body.appendChild(playerInterface);
+    playerInterface.appendChild(player2);
+    player2.appendChild(p1_2);
+    player2.appendChild(p2_2);
 
     gameBoard.array.forEach(item => {
         let square = document.createElement("span");
@@ -58,10 +89,8 @@ const gameLogic = (function () {
         item.addEventListener("click", (e) => {
             let target = e.target;
             function validSquare () {
-                if (item.querySelector("p").innerText === playerOne.marker || item.querySelector("p").innerText === playerTwo.marker) {
-                    alert ("Please choose an empty square");
-                } else if ( gameEnd === 1) {
-                    const reset = confirm("The game is over. Do you want to reset the board ?(y/n)");
+                if ( gameEnd === 1) {
+                    const reset = confirm("The game is over. Do you want to reset the board ?");
                     if (reset === true) {
                         gameBoard.array.splice(0, 9, '','','','','','','','','',);
                         console.log(gameBoard);
@@ -69,7 +98,10 @@ const gameLogic = (function () {
                             item.querySelector("p").innerText = '';
                         });
                         gameEnd = 0;
+                        activePlayer = 0;
                     }
+                } else if (item.querySelector("p").innerText === playerOne.marker || item.querySelector("p").innerText === playerTwo.marker) {
+                    alert ("Please choose an empty square");
                 } else {
                     activePlayer++;
                     activePlayer = activePlayer % 2;
@@ -100,15 +132,15 @@ const gameLogic = (function () {
                 alert("You win");
                 gameEnd = 1;
             } else if (calculator.checkWin(zerothEle, thirdEle, sixthEle) === 3 || calculator.checkWin(zerothEle, thirdEle, sixthEle) === -3 || calculator.checkWin(firstEle, fourthEle, seventhEle) === 3 || calculator.checkWin(firstEle, fourthEle, seventhEle) === -3 || calculator.checkWin(secondEle, fifthEle, eighthEle) === 3 || calculator.checkWin(secondEle, fifthEle, eighthEle) === -3) {
-                //alert("You win row");
+                alert("You win row");
                 gameEnd = 1;
             } else if (calculator.checkWin(zerothEle, fourthEle, eighthEle) === 3 || calculator.checkWin(zerothEle, fourthEle, eighthEle) === -3 || calculator.checkWin(secondEle, fourthEle, sixthEle) === 3 || calculator.checkWin(secondEle, fourthEle, sixthEle) === -3) {
-                //alert("You win diag");
+                alert("You win diag");
                 gameEnd = 1;
             } else if (gameBoard.array.includes('') === true || gameBoard.array.includes('') === true || gameBoard.array.includes('') === true) {
                 //alert("The game continue");
             } else {
-                //alert("It's a tie");
+                alert("It's a tie");
                 gameEnd = 1;
             }
         });
