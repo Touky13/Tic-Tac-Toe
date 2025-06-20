@@ -8,6 +8,11 @@
     justify-items: center;
 }
 
+h1 {
+    font-size: 3rem;
+    text-align: center;
+}
+
 span {
     display: flex;
     width: 100%;
@@ -34,4 +39,20 @@ p {
 
 .player {
     gap: 1rem;
+}
+
+.buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+button:hover {
+    background-color: darkgray;
+}
+
+button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1.5rem;
 }
