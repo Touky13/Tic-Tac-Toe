@@ -1,22 +1,28 @@
 const gameBoard = (function () {
-    const arrayBot = ['',1,1,'','','','','',''];
-    //const arrayMid = ['',0,''];
-    //const arrayTop = [1,'',1];
-    return { arrayBot };
+    const array = ['','','','','','','','',''];
+    return { array };
 })();
 console.log (gameBoard);
 
 function createPlayer (name, marker) {
-    return { name, marker };
+    const userInput = prompt("Please enter your name:")
+    if (userInput === "") {
+        alert("You didn't choose a name.");
+    } else if (userInput !== null) {
+        alert("Hello, " + userInput + "!");
+    } else {
+        alert("You canceled the input.");
+    }
+    return { name, marker, userInput };
 };
 
-const playerOne = createPlayer ("john", "x");
+const playerOne = createPlayer ("player one", "x");
 console.log ({
     name: playerOne.name,
     marker: playerOne.marker
 });
 
-const playerTwo = createPlayer ("agnes", "o");
+const playerTwo = createPlayer ("player two", "o");
 console.log ({
     name: playerTwo.name,
     marker: playerTwo.marker
@@ -28,7 +34,7 @@ const display = (function () {
     body.appendChild(div);
     div.classList.add("gameDisplay");
 
-    gameBoard.arrayBot.forEach(item => {
+    gameBoard.array.forEach(item => {
         let square = document.createElement("span");
         let p = document.createElement("p");
         p.innerText = item;
@@ -36,61 +42,50 @@ const display = (function () {
         square.appendChild(p);
         square.setAttribute ("data-squareId", document.querySelectorAll("span").length-1);
     });
-    /*gameBoard.arrayMid.forEach(item => {
-        let square = document.createElement("span");
-        let p = document.createElement("p");
-        p.innerText = item;
-        div.appendChild(square);
-        square.appendChild(p);
-        square.id = document.querySelectorAll("span").length-1;
-    });
-    gameBoard.arrayTop.forEach(item => {
-        let square = document.createElement("span");
-        let p = document.createElement("p");
-        p.innerText = item;
-        div.appendChild(square);
-        square.appendChild(p);
-        square.id = document.querySelectorAll("span").length-1;
-    });*/
  })();
 
 const gameLogic = (function () {
     const calculator = (function () {
-        const sumBot = (zerothEleBot, firstEleBot, secondEleBot) => zerothEleBot + firstEleBot + secondEleBot;
-        const sumMid = (zerothEleMid, firstEleMid, secondEleMid) => zerothEleMid + firstEleMid + secondEleMid;
-        const sumTop = (zerothEleTop, firstEleTop, secondEleTop) => zerothEleTop + firstEleTop + secondEleTop;
-        const sumRow0 = (zerothEleBot, zerothEleMid, zerothEleTop) => zerothEleBot + zerothEleMid + zerothEleTop;
-        const sumRow1 = (firstEleBot, firstEleMid, firstEleTop) => firstEleBot + firstEleMid + firstEleTop;
-        const sumRow2 = (secondEleBot, secondEleMid, secondEleTop) => secondEleBot + secondEleMid + secondEleTop;
-        const sumDiag0 = (zerothEleBot, firstEleMid, secondEleTop) => zerothEleBot + firstEleMid + secondEleTop;
-        const sumDiag1 = (secondEleBot, firstEleMid, zerothEleTop) =>secondEleBot + firstEleMid + zerothEleTop;
-        return { sumBot, sumMid, sumTop, sumRow0, sumRow1, sumRow2, sumDiag0, sumDiag1 };
+        const checkWin = (a, b, c) => a + b + c;
+        return { checkWin };
     })();
 
     const test = document.querySelectorAll("span");
+    let activePlayer = 0;
 
     test.forEach(item => {
         item.addEventListener("click", (e) => {
-            item.querySelector("p").innerText = "1";
             let target = e.target;
-            console.log(target);
-            console.log(target.dataset.squareid);
-            gameBoard.arrayBot.splice(target.dataset.squareid, 1, 1);
-            console.log(gameBoard)
-            const [ zerothEleBot, firstEleBot, secondEleBot ] = gameBoard.arrayBot;
-            console.log (zerothEleBot, firstEleBot, secondEleBot);
-            /*const [ zerothEleMid, firstEleMid, secondEleMid ] = gameBoard.arrayMid;
-            console.log (zerothEleMid, firstEleMid, secondEleMid);
-            const [ zerothEleTop, firstEleTop, secondEleTop ] = gameBoard.arrayTop;
-            console.log (zerothEleTop, firstEleTop, secondEleTop);
-            console.log(gameBoard.arrayBot, calculator.sumBot(zerothEleBot, firstEleBot, secondEleBot),zerothEleBot, firstEleBot, secondEleBot);       
-            */if (calculator.sumBot(zerothEleBot, firstEleBot, secondEleBot) === 3 || calculator.sumBot === -3 || calculator.sumMid === 3 || calculator.sumMid === -3 || calculator.sumTop === 3 || calculator.sumTop === -3) {
-                //alert("You win");
-            } else if (calculator.sumRow0() === 3 || calculator.sumRow0 === -3 || calculator.sumRow1 === 3 || calculator.sumRow1 === -3 || calculator.sumRow2 === 3 || calculator.sumRow2 === -3) {
+                            
+            activePlayer++;
+            activePlayer = activePlayer % 2;
+            console.log(activePlayer);
+            switch (activePlayer) {
+                case 1:
+                    item.querySelector("p").innerText = playerOne.marker;
+                    console.log(target);
+                    console.log(target.dataset.squareid);
+                    gameBoard.array.splice(target.dataset.squareid, 1, 1);
+                    console.log(gameBoard);
+                    break;
+                case 0:
+                    item.querySelector("p").innerText = playerTwo.marker;
+                    console.log(target);
+                    console.log(target.dataset.squareid);
+                    gameBoard.array.splice(target.dataset.squareid, 1, -1);
+                    console.log(gameBoard);
+                    break;
+            }
+
+            const [ zerothEle, firstEle, secondEle, thirdEle, fourthEle, fifthEle, sixthEle, seventhEle, eighthEle ] = gameBoard.array;
+            console.log (zerothEle, firstEle, secondEle, thirdEle, fourthEle, fifthEle, sixthEle, seventhEle, eighthEle);
+            if (calculator.checkWin(zerothEle, firstEle, secondEle) === 3 || calculator.checkWin(zerothEle, firstEle, secondEle) === -3 || calculator.checkWin(thirdEle, fourthEle, fifthEle) === 3 || calculator.checkWin(thirdEle, fourthEle, fifthEle) === -3 || calculator.checkWin(sixthEle, seventhEle, eighthEle) === 3 || calculator.checkWin(sixthEle, seventhEle, eighthEle) === -3) {
+                alert("You win");
+            } else if (calculator.checkWin(zerothEle, thirdEle, sixthEle) === 3 || calculator.checkWin(zerothEle, thirdEle, sixthEle) === -3 || calculator.checkWin(firstEle, fourthEle, seventhEle) === 3 || calculator.checkWin(firstEle, fourthEle, seventhEle) === -3 || calculator.checkWin(secondEle, fifthEle, eighthEle) === 3 || calculator.checkWin(secondEle, fifthEle, eighthEle) === -3) {
                 //alert("You win row");
-            } else if (calculator.sumDiag0 === 3 || calculator.sumDiag0 === -3 || calculator.sumDiag1 === 3 || calculator.sumDiag1 === -3) {
+            } else if (calculator.checkWin(zerothEle, fourthEle, eighthEle) === 3 || calculator.checkWin(zerothEle, fourthEle, eighthEle) === -3 || calculator.checkWin(secondEle, fourthEle, sixthEle) === 3 || calculator.checkWin(secondEle, fourthEle, sixthEle) === -3) {
                 //alert("You win diag");
-            } else if (gameBoard.arrayBot.includes('') === true || gameBoard.arrayMid.includes('') === true || gameBoard.arrayTop.includes('') === true) {
+            } else if (gameBoard.array.includes('') === true || gameBoard.array.includes('') === true || gameBoard.array.includes('') === true) {
                 //alert("The game continue");
             } else {
                 //alert("It's a tie");
